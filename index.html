@@ -2,7 +2,9 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" manifest="manifest.apache"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" > <!--<![endif]-->
+<!--manifest="manifest.apache"-->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,11 +16,13 @@
 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="./js/vendor/jquery-1.10.2.min.js"></script>
     <script src="./js/offline-events.js"></script>
 </head>
-<body>
+<body class="panel-body">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -28,7 +32,8 @@
     DESCR:
     Connect to a server when possible.
     When no network, we save the data in browser's application cache.
-    As soon as connection is established we save the data to the server (with a POST).
+    As soon as connection is established we send the data to the server (with a POST).
+    Every event and server-response is logged.
 </pre>
 
 <main id="container">
