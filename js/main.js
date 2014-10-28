@@ -41,14 +41,13 @@ function sendMessagesToServer(){
         $.ajax({
             type: type,
             url: serviceUrl,
-            data: data
+            data: data,
+            dataType: 'json'
         }).done(function (responseData) {
             logEvent(responseData.Status);
         }).error(function (jqXHR, textStatus, errorThrown) {
             logEvent(jqXHR.responseText || textStatus);
         });
-
-
 
 //            $.post("/messages/save", {"Message": msg}, function(e){
 //                logEvent(e.status);

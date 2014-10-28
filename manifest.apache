@@ -1,0 +1,23 @@
+CACHE MANIFEST
+#version 1
+
+CACHE:
+./js/vendor/modernizr-2.6.2.min.js
+./js/vendor/jquery-1.10.2.min.js
+./js/plugins.js
+./css/bootstrap.min.css
+./css/normalize.css
+./css/main.css
+
+#./js/vendor/angular.min.js
+#./js/vendor/angular.js
+
+./js/offline-events.js
+./js/main.js
+#fallback.html
+
+NETWORK:
+#/jornal/list
+
+FALLBACK:
+#/home /jornal-fallback.html
