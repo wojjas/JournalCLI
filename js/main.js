@@ -1,97 +1,85 @@
-var box;
-var messages = [];
+var app = angular.module('Journal', []);
 
-function isOnLine() {
-    return navigator.onLine;
-}
+app.controller('JournalCtrl', ['$scope', function ($scope) {
 
-function reportOnlineStatus(){
-    $("#onlineStatus").html((isOnLine() ? "Yes" : "No"));
-}
+    var server = {
+      sendMessage: function(messages) {
+          var serviceUrl = "http://localhost:56962/api/Message/post";
+          var type = "POST";
 
-function storeMessage(){
-    var message = box.val();
-    if(!isOnLine()){
-        storeMessageLocal(message);
+          messages.reverse();
+          while (messages.length > 0) {
+              var msg = messages.pop();
+              var data = {message: msg};
+
+              $.ajax({
+                  type: type,
+                  url: serviceUrl,
+                  data: data,
+                  dataType: 'json'
+              }).done(function (responseData) {
+                  logEvent(responseData.Status);
+              }).error(function (jqXHR, textStatus, errorThrown) {
+                  logEvent(jqXHR.responseText || textStatus);
+              });
+          }
+      },
+      isConnectedString: function () {
+          return navigator.onLine ? "Yes" : "No";
+      },
+      isConnectedBool: function () {
+          return navigator.onLine;
+      }
+    };
+
+    var message = {
+        messages: [],
+        message:'',
+
+        addMessage: function(){
+            this.messages.push(this.message);
+        }
     }
-    else{
-        storeMessageRemote(message);
-    }
-}
-function storeMessageLocal(msg){
-    messages.push(msg);
-    clearUI();
-    logEvent('Message saved locally: "' + msg + '"');
-}
-function storeMessageRemote(msg){
-    messages.push(msg);
-    sendMessagesToServer();
-    clearUI();
-}
 
-function sendMessagesToServer(){
-    var serviceUrl = "http://localhost:56962/api/Message/post";
-    var type = "POST";
+    $scope.server = server;
+    $scope.message = message;
+    $scope.debugMode = false;
 
-    messages.reverse();
-    while(messages.length > 0){
-        var msg = messages.pop();
-        var data = {message: msg};
 
-        $.ajax({
-            type: type,
-            url: serviceUrl,
-            data: data,
-            dataType: 'json'
-        }).done(function (responseData) {
-            logEvent(responseData.Status);
-        }).error(function (jqXHR, textStatus, errorThrown) {
-            logEvent(jqXHR.responseText || textStatus);
-        });
+    //Event handlers:
+    $scope.handleSendClick = function () {
+        message.addMessage();
 
-//            $.post("/messages/save", {"Message": msg}, function(e){
-//                logEvent(e.status);
-//            }, "json");
+        if (server.isConnectedBool()){
+            server.sendMessage(message.messages);
+        }
+        else{
+            logEvent('Message saved locally: "' + message.message + '"');
+        }
 
-//        $.post("http://localhost:64411/api/Message/post", {"Message": msg}, function(e){
-//            logEvent(e.Status);
-//        }, "json");
+        message.message = '';
 
-        //http://localhost:49992/Home/Index         //this gets us to the server but it returns an 404.
-        //http://localhost:49992/api/Message/get
-    }
-}
+        //TODO: use directive to focus to the message-box:
+        // good ex: (http://stackoverflow.com/questions/25698697/angularjs-set-focus)
+        var box = $("#journalText");
+        box.focus();
+    };
 
-function clearUI(){
-    box.val("");
-    box.focus();
-}
-
-$(function(){
     if(Modernizr.applicationcache){
-        box = $("#journalText");
-
-        //Event handlers:
-        $("#sendButton").click(function(e){
-            storeMessage();
-        });
-
-        //Event listeners:
         window.applicationCache.onupdateready = function (e) {
             logEvent("update ready");
             logEvent("swapping cache");
             applicationCache.swapCache();
         };
 
-        window.addEventListener("online", function(e){
-            reportOnlineStatus();
-            sendMessagesToServer();
-        }, true);
-
         window.addEventListener("offline", function (e) {
-            reportOnlineStatus();
+            $scope.$apply();
         }, true);
 
-        reportOnlineStatus();
+        window.addEventListener("online", function(e){
+            $scope.$apply();
+            server.sendMessage(message.messages);
+        }, true);
     }
-})
+}]);
+
