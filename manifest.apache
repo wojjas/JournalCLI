@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 1
+#version 5
 
 CACHE:
 ./js/vendor/modernizr-2.6.2.min.js
@@ -11,15 +11,13 @@ CACHE:
 ./css/normalize.css
 ./css/main.css
 
-#./js/vendor/angular.min.js
-#./js/vendor/angular.js
-
 ./js/offline-events.js
 ./js/main.js
 #fallback.html
 
+#The "NETWORK" needs to be '*' for ajax-calls to work!
 NETWORK:
-#/jornal/list
+*
 
 FALLBACK:
 #/home /jornal-fallback.html
