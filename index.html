@@ -15,9 +15,10 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!--<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />-->
 
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
 
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="./js/vendor/jquery-1.10.2.min.js"></script>
@@ -40,27 +41,47 @@
     Every event and server-response is logged.
 </pre>
 
-<main id="container">
+<main id="main-container">
     <h1>Journal</h1>
-
-    <div title="Contact with server of interest">
-        Contact: {{server.isConnectedString()}}
-    </div>
 
     <div id="controls">
         <textarea id="journalText"
+                  class="text-area"
                   autofocus
                   ng-model="message.message">
         </textarea>
-        <input type="submit"
-               id="sendButton"
-               value="Send"
-               ng-click="handleSendClick()">
+
+        <div id="btn-and-status">
+            <label class="online-status">
+                <div class="label-text">
+                    Connection <br>
+                    status:
+                </div>
+
+                <img ng-src="img/contactGreen.jpg"
+                     class="connected-icon"
+                     ng-show="server.isConnected"
+                     alt="Conn.">
+                <img ng-src="img/noContactRed.png"
+                     class="connected-icon"
+                     ng-hide="server.isConnected"
+                     alt="Not con.">
+            </label>
+            <button type="submit"
+                   id="sendButton"
+                   ng-click="handleSendClick()">
+                    <strong>Send to server</strong>
+            </button>
+        </div>
     </div>
 
     <div id="eventLogContainer">
-        <h2>Event Log</h2>
-        <ul id="log"></ul>
+        <div id="event-log-inner">
+            <h2>Event Log</h2>
+            <div class="log-text">
+                <ul id="log"></ul>
+            </div>
+        </div>
     </div>
 </main>
 

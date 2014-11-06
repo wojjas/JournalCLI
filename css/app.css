@@ -1,0 +1,66 @@
+body, h1{
+    text-align: center;
+}
+#main-container {
+    text-align: center;
+
+    width:95%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#controls{
+}
+.text-area{
+    width:100%;
+    height: 5em;
+    margin-bottom: 5px;
+}
+
+#btn-and-status{
+    clear: both;
+}
+.online-status{
+    margin-right: 15px;
+    float: left;
+    font-size: 0.8em;
+    color: grey;
+}
+.label-text{
+    margin-top: 10px;
+    float: left;
+}
+.connected-icon{
+    width: 4em;
+    height: auto;
+    margin-right: 20px;
+}
+#sendButton{
+    height: 4em;
+    float:right;
+}
+
+#eventLogContainer{
+    clear:both;
+    margin-top: 80px;
+    text-align: center;
+    height: 100%;
+}
+#event-log-inner{
+    width:100%;
+    color: grey;
+    border: dotted 1px lightgrey;
+
+    margin-left: auto;
+    margin-right:auto;
+}
+h2{
+    color: grey;
+}
+.log-text{
+    font-family: monospace;
+    text-align: left;
+}
+.log-text > ul{
+    list-style-type: none;
+}
