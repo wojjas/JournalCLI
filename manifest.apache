@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 2
+#version 1
 
 CACHE:
 ./js/vendor/modernizr-2.6.2.min.js

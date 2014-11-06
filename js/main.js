@@ -16,7 +16,7 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
         //Checks if connection with server of interest is up.
         //checkRequestedExplicitly if true, the request for checking came explicitly and
         //not from a periodical check that happens every XX seconds.
-        checkConnection: function (checkRequestedExplicitly) {
+        checkConnection: function (async, sendLocallyStored) {
             if(this.checkingConnection){
                 return;
             }
@@ -28,15 +28,15 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                 type: 'GET',
                 url: this.url,
                 cached: false,
-                async: !checkRequestedExplicitly,   //According to spec this shouldn't work for CORS, but it does.
+                async: async,   //According to spec this shouldn't work for CORS, but it does.
                 timeout: 1500
             }).done(function (responseData) {
                 log('Server response: ' + responseData);
                 if(responseData === 'Happy-Clappy'){
                     that.setIsConnected(true);
-                    if(!checkRequestedExplicitly){
+                    if(sendLocallyStored){
                         $scope.$apply(); //TODO: use a watch instead?
-                        server.sendMessage(message.messages);
+                        server.sendMessage(message);
                     }
                 }
                 else{
@@ -62,13 +62,14 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                 this.continuousConnectionChecking = undefined;
             }
             else if(this.continuousConnectionChecking === undefined){
-                this.continuousConnectionChecking = setInterval(function(){server.checkConnection()}, 6000);
+                this.continuousConnectionChecking = setInterval(function(){server.checkConnection(true, true)}, 6000);
             }
         },
         checkingConnection: false,
         connectionLastChecked: '',
 
-      sendMessage: function(messages) {
+      sendMessage: function(messageObject) {
+          var messages = messageObject.messages;
           //Clone to a local variable:
           var messagesLocal = messages.slice(0, messages.length);
 
@@ -84,7 +85,8 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                   dataType: 'json'
               }).done(function (responseData) {
                   logEvent(responseData.Status);
-                  messages.shift(); //shift() from original what was pop()'ed from reversed clone.
+                  //messages.shift(); //shift() from original what was pop()'ed from reversed clone.
+                  messageObject.removeMessage();
               }).error(function (jqXHR, textStatus, errorThrown) {
                   var exception = '';
                   if(errorThrown){
@@ -106,6 +108,11 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
 
         addMessage: function(){
             this.messages.push(this.message);
+            window.localStorage['messages'] = JSON.stringify(this.messages);
+        },
+        removeMessage: function () {
+            this.messages.shift(); //shift() from original what was pop()'ed from reversed clone.
+            window.localStorage['messages'] = JSON.stringify(this.messages);
         }
     }
 
@@ -141,20 +148,33 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
         console.debug(message);
     }
 
+
     $scope.server = server;
+
+    if(window.localStorage['messages']){
+        message.messages = JSON.parse(window.localStorage['messages']);
+
+        for(var i = 0, len = message.messages.length; i < len; i++ ){
+            //logEvent('Message saved locally: "' + message.messages[i] + '"');
+            //eventLog.addEvent('Hellu');
+            //$scope.$emit('logEvent', 'Message to log');
+        }
+
+        server.checkConnection(true, true);
+    }
     $scope.message = message;
     $scope.debugMode = false;
 
-    server.checkConnection(true);
+    server.checkConnection(false, false);
     server.setContinuousChecking();
 
     //Event handlers:
     $scope.handleSendClick = function () {
         message.addMessage();
-        server.checkConnection(true);
+        server.checkConnection(false, false);
 
         if (server.isConnected){
-            server.sendMessage(message.messages);
+            server.sendMessage(message);
         }
         else{
             logEvent('Message saved locally: "' + message.message + '"');
