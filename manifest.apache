@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 1
+#version 2
 
 CACHE:
 ./js/vendor/modernizr-2.6.2.min.js
@@ -16,7 +16,8 @@ CACHE:
 ./img/contactGreen.jpg
 ./img/noContactRed.png
 
-./js/offline-events.js
+./js/appCacheEvents.js
+./js/loggerSrvc.js
 ./js/main.js
 #fallback.html
 

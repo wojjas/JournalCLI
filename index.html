@@ -19,15 +19,9 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/app.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-
-    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-    <script src="./js/vendor/jquery-1.10.2.min.js"></script>
-    <script src="./js/vendor/angular.min.js"></script>
-    <!--<script src="./js/vendor/angular.js"></script>-->
-    <script src="./js/offline-events.js"></script>
 </head>
 <body class="panel-body"
-      ng-controller="JournalCtrl">
+      ng-controller="MainCtrl">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -75,16 +69,26 @@
         </div>
     </div>
 
-    <div id="eventLogContainer">
+    <div id="eventLogContainer"
+         ng-controller="OfflineEventsCtrl">
         <div id="event-log-inner">
             <h2>Event Log</h2>
-            <div class="log-text">
-                <ul id="log"></ul>
-            </div>
+            <ul class="log-text">
+                <li ng-repeat="event in detectedEvents">
+                    {{event}}
+                </li>
+            </ul>
         </div>
     </div>
 </main>
 
+<script src="js/vendor/modernizr-2.6.2.min.js"></script>
+<script src="./js/vendor/jquery-1.10.2.min.js"></script>
+<script src="./js/vendor/angular.min.js"></script>
+<!--<script src="./js/vendor/angular.js"></script>-->
+<script src="./app.js"></script>
+<script src="./js/loggerSrvc.js"></script>
+<script src="./js/appCacheEvents.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 

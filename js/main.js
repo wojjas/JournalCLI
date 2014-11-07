@@ -1,6 +1,18 @@
-var app = angular.module('Journal', []);
+var main = angular.module('Main', []);
 
-app.controller('JournalCtrl', ['$scope', function ($scope) {
+main.controller('MainCtrl', ['$scope', 'Logger', '$timeout',
+    function ($scope, Logger, $timeout) {
+
+        $scope.$on('newLogMessage', function (event, messages) {
+            $scope.detectedEvents = messages;
+
+            //Scope needs to be updated at any time this event is handled.
+            //We can't just call $scope.$watch(), we have to use $timeout with 0 so that
+            //it gets scheduled to fire as soon as possible.
+            $timeout(
+                $scope.$watch('detectedEvents', function () { }),
+                0);
+        });
 
     var server = {
         //"http://localhost:56962/api/message/"
@@ -31,7 +43,7 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                 async: async,   //According to spec this shouldn't work for CORS, but it does.
                 timeout: 1500
             }).done(function (responseData) {
-                log('Server response: ' + responseData);
+                log('Server response: ' + responseData, true);
                 if(responseData === 'Happy-Clappy'){
                     that.setIsConnected(true);
                     if(sendLocallyStored){
@@ -41,14 +53,14 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                 }
                 else{
                     that.setIsConnected(false);
-                    log('Server responded but not with the expected message');
+                    log('Server responded but not with the expected message', true);
                 }
             }).error(function (jqXHR, textStatus, errorThrown) {
                 var exception = '';
                 if(errorThrown){
                     exception = ", error thrown: " + errorThrown;
                 }
-                log(jqXHR.responseText || textStatus + exception);
+                log(jqXHR.responseText || textStatus + exception, true);
 
                 that.setIsConnected(false);
             });
@@ -84,7 +96,7 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                   data: data,
                   dataType: 'json'
               }).done(function (responseData) {
-                  logEvent(responseData.Status);
+                  log(responseData.Status);
                   //messages.shift(); //shift() from original what was pop()'ed from reversed clone.
                   messageObject.removeMessage();
               }).error(function (jqXHR, textStatus, errorThrown) {
@@ -93,7 +105,7 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
                       exception = ", error thrown: " + errorThrown;
                   }
 
-                  logEvent(jqXHR.responseText || textStatus + exception);
+                  log(jqXHR.responseText || textStatus + exception);
               });
           }
       },
@@ -139,11 +151,12 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
             zeroPaddedMilliseconds;
         return timeStamp;
     }
-    function log(message){
-        var showDebugMessage = false;
+    function log(message, hideFromEventLog){
+        var hideFromEventLog = hideFromEventLog;
 
-        if(showDebugMessage){
-            logEvent(message);
+        if(!hideFromEventLog){
+            //logEvent(message);
+            Logger.logMessage(message);
         }
         console.debug(message);
     }
@@ -155,7 +168,7 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
         message.messages = JSON.parse(window.localStorage['messages']);
 
         for(var i = 0, len = message.messages.length; i < len; i++ ){
-            //logEvent('Message saved locally: "' + message.messages[i] + '"');
+            //logEvent('Saved locally: "' + message.messages[i] + '"');
             //eventLog.addEvent('Hellu');
             //$scope.$emit('logEvent', 'Message to log');
         }
@@ -177,7 +190,7 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
             server.sendMessage(message);
         }
         else{
-            logEvent('Message saved locally: "' + message.message + '"');
+            log('Saved locally: "' + message.message + '"');
         }
 
         //Message has been sent and displayed, clear it.
@@ -188,13 +201,5 @@ app.controller('JournalCtrl', ['$scope', function ($scope) {
         var box = $("#journalText");
         box.focus();
     };
-
-    if(Modernizr.applicationcache){
-        window.applicationCache.onupdateready = function (e) {
-            logEvent("update ready");
-            logEvent("swapping cache");
-            applicationCache.swapCache();
-        };
-    }
 }]);
 
