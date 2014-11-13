@@ -3,28 +3,39 @@
  * Listening controllers should use:
  * $scope$watch(function() {return messenger.getData().id}, ...
  */
-app.factory('messenger', function($rootScope){
-    var data = {
-        id: false,
-        message: '',
-        setMessage: function (msg) {
-            this.id = !this.id;
-            this.message = msg;
-        }
-    };
+(function(){
+    'use strict';
 
-    return{
-        setData:function(message){
+    app.factory('messenger', function($rootScope){
+        var data = {
+            touchedFlag: false,
+            message: '',
+            setMessage: setMessage
+        };
+
+        var service = {
+            setData: setData,
+            getData: getData
+        };
+
+        return service;
+
+
+        function setData(message){
             data.setMessage(message);
 
             //Needed to make $watch():es aware if data set from code.
             if (!$rootScope.$$phase) {
                 $rootScope.$apply();
             }
-        },
-
-        getData:function(){
+        }
+        function getData(){
             return data;
         }
-    }
-});
+
+        function setMessage(message) {
+            data.touchedFlag = !data.touchedFlag;
+            data.message = message;
+        }
+    });
+})();

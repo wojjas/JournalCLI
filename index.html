@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="Journal"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" ng-app="Journal"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="Journal" manifest="manifest.apache"> <!--<![endif]-->
 <!--manifest="manifest.apache"-->
 
 <head>
@@ -97,10 +97,14 @@
 <script src="./js/vendor/angular.min.js"></script>
 <!--<script src="./js/vendor/angular.js"></script>-->
 <script src="./js/app.js"></script>
+<script src="./js/journal/log.module.js"></script>
 <script src="./js/journal/log.js"></script>
+<script src="./js/services/timeStamp.js"></script>
 <script src="./js/services/messenger.js"></script>
+<script src="./js/journal/eventListener.module.js"></script>
 <script src="./js/journal/eventListener.js"></script>
 <script src="js/plugins.js"></script>
+<script src="js/journal/journal.module.js"></script>
 <script src="js/journal/journal.js"></script>
 
 </body>

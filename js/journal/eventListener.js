@@ -1,51 +1,52 @@
 /**
- * Created by Wojtek on 2014-11-07.
- */
-/**
  * Listens for and logs Application Cache events.
  */
-var eventListener = angular.module('eventListener', []);
+(function () {
+    'use strict';
 
-eventListener.controller('EventListener', ['$scope', 'messenger',
-    function EventListener($scope, messenger) {
+    angular
+        .module('eventListener')
+        .controller('EventListener', ['$scope', 'messenger', EventListener]);
 
-        messenger.setData('Window Load');
+        function EventListener($scope, messenger) {
 
-        //Setup Event handlers if application cache exists:
-        if(Modernizr.applicationcache){
-            window.applicationCache.onupdateready = function (e) {
-                messenger.setData('Update Ready');
-                messenger.setData('Swapping Cache');
-                applicationCache.swapCache(); //Really needed?
+            messenger.setData('Window Load');
 
-                //Automatically reload the page:
-                //location.reload();
-            };
+            //Setup Event handlers if application cache exists:
+            if(Modernizr.applicationcache){
+                window.applicationCache.onupdateready = function (e) {
+                    messenger.setData('Update Ready');
+                    messenger.setData('Swapping Cache');
+                    applicationCache.swapCache(); //Really needed?
 
-            window.applicationCache.onchecking = function (e) {
-                messenger.setData('Checking');
-            };
+                    //Automatically reload the page:
+                    //location.reload();
+                };
 
-            window.applicationCache.onnoupdate = function (e) {
-                messenger.setData('NoUpdate');
-            };
+                window.applicationCache.onchecking = function (e) {
+                    messenger.setData('Checking');
+                };
 
-            window.applicationCache.oncached = function (e) {
-                messenger.setData('Cached');
-            };
+                window.applicationCache.onnoupdate = function (e) {
+                    messenger.setData('NoUpdate');
+                };
 
-            window.applicationCache.onobsolete = function (e) {
-                messenger.setData('Obsolete');
-            };
+                window.applicationCache.oncached = function (e) {
+                    messenger.setData('Cached');
+                };
 
-            window.applicationCache.ondownloading = function (e) {
-                messenger.setData('Downloading');
-            };
+                window.applicationCache.onobsolete = function (e) {
+                    messenger.setData('Obsolete');
+                };
 
-            window.applicationCache.onerror = function (e) {
-                messenger.setData('Error');
-            };
+                window.applicationCache.ondownloading = function (e) {
+                    messenger.setData('Downloading');
+                };
+
+                window.applicationCache.onerror = function (e) {
+                    messenger.setData('Error');
+                };
+            }
         }
-    }]);
-
+})();
 

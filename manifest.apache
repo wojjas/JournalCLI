@@ -7,11 +7,15 @@ CACHE:
 #./js/vendor/angular.js
 ./js/vendor/angular.min.js
 
-./app.js
-./js/log.js
-./js/messenger.js
-./js/eventListener.js
-./js/journal.js
+./js/app.js
+./js/journal/log.module.js
+./js/journal/log.js
+./js/services/timeStamp.js
+./js/services/messenger.js
+./js/journal/eventListener.module.js
+./js/journal/eventListener.js
+./js/journal/journal.module.js
+./js/journal/journal.js
 ./js/plugins.js
 
 ./css/bootstrap.min.css
