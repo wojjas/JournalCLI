@@ -8,10 +8,10 @@ CACHE:
 ./js/vendor/angular.min.js
 
 ./app.js
-./js/logCtrl.js
-./js/messengerSrvc.js
-./js/appCacheEvents.js
-./js/main.js
+./js/log.js
+./js/messenger.js
+./js/eventListener.js
+./js/journal.js
 ./js/plugins.js
 
 ./css/bootstrap.min.css

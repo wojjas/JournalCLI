@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="Journal"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" ng-app="Journal" manifest="manifest.apache"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="Journal"> <!--<![endif]-->
 <!--manifest="manifest.apache"-->
 
 <head>
@@ -38,7 +38,7 @@
     <h1>Journal</h1>
 
     <div id="controls"
-         ng-controller="MainCtrl">
+         ng-controller="Journal">
         <textarea id="journalText"
                   class="text-area"
                   autofocus
@@ -73,10 +73,10 @@
     This controller has no View counterpart, yet. This is done to load it.
     Don't know how to do it from Logical layer, yet. :-)
     -->
-    <div ng-controller="OfflineEventsCtrl"></div>
+    <div ng-controller="EventListener"></div>
 
     <div id="eventLogContainer"
-         ng-controller="LogCtrl">
+         ng-controller="Log">
         <div id="event-log-inner">
             <div class="title-title">
                 <span class="log-title-head">Event Log</span> <br>
@@ -96,12 +96,12 @@
 <script src="./js/vendor/jquery-1.10.2.min.js"></script>
 <script src="./js/vendor/angular.min.js"></script>
 <!--<script src="./js/vendor/angular.js"></script>-->
-<script src="./app.js"></script>
-<script src="./js/logCtrl.js"></script>
-<script src="./js/messengerSrvc.js"></script>
-<script src="./js/appCacheEvents.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/journal/log.js"></script>
+<script src="./js/services/messenger.js"></script>
+<script src="./js/journal/eventListener.js"></script>
 <script src="js/plugins.js"></script>
-<script src="js/main.js"></script>
+<script src="js/journal/journal.js"></script>
 
 </body>
 </html>

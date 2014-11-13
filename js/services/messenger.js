@@ -1,9 +1,9 @@
 /**
  * For inter-controller-communication.
  * Listening controllers should use:
- * $scope$watch(function() {return Messenger.getData().id}, ...
+ * $scope$watch(function() {return messenger.getData().id}, ...
  */
-app.factory('Messenger', function($rootScope){
+app.factory('messenger', function($rootScope){
     var data = {
         id: false,
         message: '',

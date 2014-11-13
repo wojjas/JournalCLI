@@ -1,7 +1,7 @@
-var main = angular.module('Main', []);
+var journal = angular.module('journal', []);
 
-main.controller('MainCtrl', ['$scope', 'Messenger',
-    function MainCtrl($scope, Messenger) {
+journal.controller('Journal', ['$scope', 'messenger',
+    function Journal($scope, messenger) {
 
     var server = {
         //"http://localhost:56962/api/message/"
@@ -143,7 +143,7 @@ main.controller('MainCtrl', ['$scope', 'Messenger',
         var hideFromEventLog = hideFromEventLog;
 
         if(!hideFromEventLog){
-            Messenger.setData(message);
+            messenger.setData(message);
         }
         console.debug(message);
     }

@@ -1,10 +1,10 @@
 /**
  * Logger that logs messages, log entries.
  */
-var log = angular.module('Log', []);
+var log = angular.module('log', []);
 
-log.controller('LogCtrl', ['$scope', 'Messenger',
-    function ($scope, Messenger) {
+log.controller('Log', ['$scope', 'messenger',
+    function ($scope, messenger) {
 
         //Create time stamp of now on format HH:mm:ss:zzz where zzz are milliseconds.
         function nowTimeStamp() {
@@ -33,12 +33,12 @@ log.controller('LogCtrl', ['$scope', 'Messenger',
         $scope.logEntries = logEntries;
         $scope.maxNofEntries = 10;
 
-        $scope.$watch(function(){return Messenger.getData().id}, function () {
-            if (Messenger.getData() && Messenger.getData().message) {
+        $scope.$watch(function(){return messenger.getData().id}, function () {
+            if (messenger.getData() && messenger.getData().message) {
                 if(logEntries.length === $scope.maxNofEntries){
                     logEntries.shift();
                 }
-                logEntries.push(nowTimeStamp() + ' - ' + Messenger.getData().message);
+                logEntries.push(nowTimeStamp() + ' - ' + messenger.getData().message);
             }
         });
 
