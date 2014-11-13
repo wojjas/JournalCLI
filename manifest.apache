@@ -1,11 +1,17 @@
 CACHE MANIFEST
-#version 2
+#version 1.0
 
 CACHE:
 ./js/vendor/modernizr-2.6.2.min.js
 ./js/vendor/jquery-1.10.2.min.js
 #./js/vendor/angular.js
 ./js/vendor/angular.min.js
+
+./app.js
+./js/logCtrl.js
+./js/messengerSrvc.js
+./js/appCacheEvents.js
+./js/main.js
 ./js/plugins.js
 
 ./css/bootstrap.min.css
@@ -15,11 +21,6 @@ CACHE:
 
 ./img/contactGreen.jpg
 ./img/noContactRed.png
-
-./js/appCacheEvents.js
-./js/loggerSrvc.js
-./js/main.js
-#fallback.html
 
 #The "NETWORK" needs to be '*' for ajax-calls to work!
 NETWORK:

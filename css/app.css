@@ -55,8 +55,19 @@ body, h1{
     margin-left: auto;
     margin-right:auto;
 }
-h2{
+.title-title{
+    margin-top: 0.3em;
+    margin-bottom: 0.5em;
+}
+.log-title-head{
     color: grey;
+    font-size: 2em;
+    line-height: 90%;
+
+}
+.log-title-bottom{
+    display: block;
+    font-size: 0.6em;
 }
 .log-text{
     font-family: monospace;

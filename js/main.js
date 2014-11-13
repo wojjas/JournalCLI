@@ -1,18 +1,7 @@
 var main = angular.module('Main', []);
 
-main.controller('MainCtrl', ['$scope', 'Logger', '$timeout',
-    function ($scope, Logger, $timeout) {
-
-        $scope.$on('newLogMessage', function (event, messages) {
-            $scope.detectedEvents = messages;
-
-            //Scope needs to be updated at any time this event is handled.
-            //We can't just call $scope.$watch(), we have to use $timeout with 0 so that
-            //it gets scheduled to fire as soon as possible.
-            $timeout(
-                $scope.$watch('detectedEvents', function () { }),
-                0);
-        });
+main.controller('MainCtrl', ['$scope', 'Messenger',
+    function MainCtrl($scope, Messenger) {
 
     var server = {
         //"http://localhost:56962/api/message/"
@@ -97,7 +86,6 @@ main.controller('MainCtrl', ['$scope', 'Logger', '$timeout',
                   dataType: 'json'
               }).done(function (responseData) {
                   log(responseData.Status);
-                  //messages.shift(); //shift() from original what was pop()'ed from reversed clone.
                   messageObject.removeMessage();
               }).error(function (jqXHR, textStatus, errorThrown) {
                   var exception = '';
@@ -155,8 +143,7 @@ main.controller('MainCtrl', ['$scope', 'Logger', '$timeout',
         var hideFromEventLog = hideFromEventLog;
 
         if(!hideFromEventLog){
-            //logEvent(message);
-            Logger.logMessage(message);
+            Messenger.setData(message);
         }
         console.debug(message);
     }
@@ -168,9 +155,8 @@ main.controller('MainCtrl', ['$scope', 'Logger', '$timeout',
         message.messages = JSON.parse(window.localStorage['messages']);
 
         for(var i = 0, len = message.messages.length; i < len; i++ ){
-            //logEvent('Saved locally: "' + message.messages[i] + '"');
-            //eventLog.addEvent('Hellu');
-            //$scope.$emit('logEvent', 'Message to log');
+            //TODO: Not working yet. Probably no listening LogCtrl at this point.
+            log('Saved locally: "' + message.messages[i] + '"');
         }
 
         server.checkConnection(true, true);

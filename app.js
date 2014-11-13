@@ -3,5 +3,6 @@
  */
 var app = angular.module('Journal', [
     'Main',
-    'EventListener'
+    'EventListener',
+    'Log'
 ]);
